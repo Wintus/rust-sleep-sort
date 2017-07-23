@@ -4,6 +4,7 @@ use std::sync::mpsc::channel;
 
 // TODO: generic
 pub fn sleep_sort(ns: Vec<u32>) -> Vec<u32> {
+    // transmit & receive, x is nonsense
     let (tx, rx) = channel();
 
     let threads: Vec<_> = ns.into_iter().map(|n| {
