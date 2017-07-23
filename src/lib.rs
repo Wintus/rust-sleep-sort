@@ -3,11 +3,11 @@ use std::time::Duration;
 use std::sync::mpsc::channel;
 
 type F = f32;
-type MS = u64;
+type U = u32;
 
-const SCALE: F = 20.0; // for accuracy
+const SCALE: F = 100_000_000.0; // in 100 milli sec order
 
-pub fn sleep_sort(ns: Vec<u32>) -> Vec<u32> {
+pub fn sleep_sort(ns: Vec<U>) -> Vec<U> {
     // transmit & receive, x is nonsense
     let (tx, rx) = channel();
 
@@ -16,8 +16,8 @@ pub fn sleep_sort(ns: Vec<u32>) -> Vec<u32> {
         let tx = tx.clone();
 
         thread::spawn(move || {
-            let ms = (n as F).log2() * SCALE;
-            let d = Duration::from_millis(ms as MS);
+            let ns = (n as F).ln_1p() * SCALE;
+            let d = Duration::new(0, ns as U);
             thread::sleep(d);
 
             tx.send(n).unwrap();

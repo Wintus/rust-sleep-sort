@@ -22,11 +22,10 @@ fn test_case_1() {
 #[test]
 fn test_log() {
     let max: u32 = 30;
-    let scale = 1000.0;
 
     let mut ns: Vec<u32> = (0..max).map(|n| {
         // logX 使うと、 0 -> -inf で 1 と差がつかない
-        let log = (n as f32).ln_1p() * scale;
+        let log = (n as f32).ln_1p() * SCALE;
         log.round() as u32
     }).collect();
 
