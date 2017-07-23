@@ -1,9 +1,9 @@
 use std::{env, thread};
 use std::time::Duration;
-use std::sync::{Arc, Mutex};
+use std::sync::mpsc::channel;
 
 fn main() {
-    let sorted = Arc::new(Mutex::new(Vec::new()));
+    let (tx, rx) = channel();
 
     let ns: Vec<_> = env::args()
         .skip(1)
@@ -11,20 +11,16 @@ fn main() {
         .collect();
 
     let threads: Vec<_> = ns.into_iter().map(|n| {
-        let sorted = sorted.clone();
+        let tx = tx.clone();
 
         thread::spawn(move || {
             let d = Duration::from_millis(n * 10);
             thread::sleep(d);
 
-            let mut sorted = sorted.lock().unwrap();
-            sorted.push(n);
+            tx.send(n).unwrap();
         })
     }).collect();
 
-    for thread in threads {
-        let _ = thread.join();
-    }
-
-    println!("{:?}", sorted);
+    let ns: Vec<_> = rx.iter().take(threads.len()).collect();
+    println!("{:?}", ns);
 }
