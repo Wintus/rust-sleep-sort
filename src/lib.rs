@@ -5,7 +5,7 @@ use std::sync::mpsc::channel;
 type F = f32;
 type U = u32;
 
-const SCALE: F = 1_000_000_000.0; // in seconds order
+const SCALE: F = 100_000_000.0; // in 100ms order
 
 pub fn sleep_sort(ns: Vec<U>) -> Vec<U> {
     // transmit & receive, x is nonsense
