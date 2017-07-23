@@ -18,3 +18,23 @@ fn test_case_1() {
     sorted.sort();
     assert_eq!(sorted, sleep_sort(ns));
 }
+
+#[test]
+fn test_log() {
+    let max: u32 = 30;
+    let scale = 1000.0;
+
+    let mut ns: Vec<u32> = (0..max).map(|n| {
+        // logX 使うと、 0 -> -inf で 1 と差がつかない
+        let log = (n as f32).ln_1p() * scale;
+        log.round() as u32
+    }).collect();
+
+    let first = ns.remove(0);
+    let sorted: bool = ns.into_iter().fold((true, first), |(sorted, prev), n| {
+        let b = sorted && prev < n;
+        (b, n)
+    }).0;
+
+    assert!(sorted);
+}
