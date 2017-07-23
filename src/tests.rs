@@ -31,17 +31,14 @@ fn test_case_2() {
 fn test_log() {
     let max: u32 = 30;
 
-    let mut ns: Vec<u32> = (0..max).map(|n| {
+    let ns: Vec<u32> = (0..max).map(|n| {
         // logX 使うと、 0 -> -inf で 1 と差がつかない
-        let log = (n as f32).ln_1p() * SCALE;
+        let n = n as f32;
+        let log = n.ln_1p() * SCALE;
         log.round() as u32
     }).collect();
 
-    let first = ns.remove(0);
-    let sorted: bool = ns.into_iter().fold((true, first), |(sorted, prev), n| {
-        let b = sorted && prev < n;
-        (b, n)
-    }).0;
-
+    let mut pairs = ns.iter().zip(ns.iter().skip(1));
+    let sorted = pairs.all(|(&n0, &n1)| n0 < n1);
     assert!(sorted);
 }
