@@ -1,12 +1,10 @@
 [package]
+authors = ["Yuya <yuya.maemichi@gmail.com>"]
 name = "rust_sleep_sort"
 version = "0.1.0"
-authors = ["Yuya <yuya.maemichi@gmail.com>"]
-
-[lib]
-name = "sleep_sort"
 
 [[bin]]
 name = "sleep_sort"
 
-[dependencies]
+[lib]
+name = "sleep_sort"
