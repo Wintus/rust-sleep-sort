@@ -33,13 +33,13 @@ fn test_case_2() {
 
 #[test]
 fn test_log() {
-    let max: u32 = 30;
+    let max: u32 = 100;
 
-    let ns: Vec<u32> = (0..max).map(|n| {
+    let ns: Vec<_> = (0..max).map(|n| {
         // logX 使うと、 0 -> -inf で 1 と差がつかない
         let n = n as f32;
         let log = n.ln_1p() * SCALE;
-        log.round() as u32
+        log as u64
     }).collect();
 
     let mut pairs = ns.iter().zip(ns.iter().skip(1));
