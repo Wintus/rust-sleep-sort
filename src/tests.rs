@@ -2,8 +2,7 @@
 extern crate rand;
 
 use self::rand::Rng;
-use self::rand::distributions::{RandSample, Exp};
-use self::rand::distributions::exponential::Exp1;
+use self::rand::distributions::{IndependentSample, Range};
 
 use super::*;
 // TODO: benchmark
@@ -51,13 +50,16 @@ fn test_log() {
 /// u32::MAX に近い数では、 log の差分が小さく、エラーが出やすい
 #[test]
 fn test_rand_ns() {
-    let size = 10;
+    let max = 1000;
+    let size = 8;
+    let range = Range::new(0, max);
     let mut rng = self::rand::thread_rng();
 
-    let ns: Vec<U> = rng.gen_iter().take(size).collect();
+    let ns: Vec<U> = (0..size)
+        .map(|_| range.ind_sample(&mut rng))
+        .collect();
     let mut sorted = ns.clone();
     sorted.sort();
 
-    println!("sort random ns in {:.1}s…", (*sorted.last().unwrap() as F).ln_1p() / 10.0);
     assert_eq!(sorted, sleep_sort(ns));
 }
