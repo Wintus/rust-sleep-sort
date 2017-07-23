@@ -1,9 +1,19 @@
 use std::{env, thread};
+use std::time::Duration;
 
 fn main() {
-    let ns: Vec<u32> = env::args()
+    let ns: Vec<_> = env::args()
         .skip(1)
         .map(|x| x.parse().unwrap_or(0))
         .collect();
-    println!("{:?}", ns);
+    let threads: Vec<_> = ns.into_iter().map(|n| {
+        thread::spawn(move || {
+            let d = Duration::from_secs(n);
+            thread::sleep(d);
+            println!("{}", n);
+        })
+    }).collect();
+    for thread in threads {
+        let _ = thread.join();
+    }
 }
