@@ -2,7 +2,10 @@ use std::thread;
 use std::time::Duration;
 use std::sync::mpsc::channel;
 
-const DELAY_RATIO: u32 = 3;
+type F = f32;
+type MS = u64;
+
+const SCALE: F = 20.0; // for accuracy
 
 pub fn sleep_sort(ns: Vec<u32>) -> Vec<u32> {
     // transmit & receive, x is nonsense
@@ -13,8 +16,8 @@ pub fn sleep_sort(ns: Vec<u32>) -> Vec<u32> {
         let tx = tx.clone();
 
         thread::spawn(move || {
-            let ms = n * DELAY_RATIO;
-            let d = Duration::from_millis(ms as u64);
+            let ms = (n as F).log2() * SCALE;
+            let d = Duration::from_millis(ms as MS);
             thread::sleep(d);
 
             tx.send(n).unwrap();
