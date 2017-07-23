@@ -21,3 +21,5 @@ pub fn sleep_sort(ns: Vec<u32>) -> Vec<u32> {
       .take(threads.len())
       .collect()
 }
+
+mod tests;
