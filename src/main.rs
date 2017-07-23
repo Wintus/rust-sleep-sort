@@ -8,7 +8,7 @@ fn main() {
         .collect();
     let threads: Vec<_> = ns.into_iter().map(|n| {
         thread::spawn(move || {
-            let d = Duration::from_secs(n);
+            let d = Duration::from_millis(n);
             thread::sleep(d);
             println!("{}", n);
         })
