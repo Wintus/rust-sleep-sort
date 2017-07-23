@@ -9,6 +9,11 @@ fn main() {
         .map(|x| x.parse().unwrap_or(0))
         .collect();
 
-    let ns = sleep_sort(ns);
+    let ns: Vec<_> = sleep_sort(ns);
     println!("{:?}", ns);
+    let sorted =
+        ns.into_iter()
+          .fold((true, 0), |(sorted, last_n), n| (sorted && last_n <= n, n))
+            .0;
+    println!("sorted: {}", sorted);
 }
