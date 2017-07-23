@@ -8,7 +8,8 @@ pub fn sleep_sort(ns: Vec<u32>) -> Vec<u32> {
     // transmit & receive, x is nonsense
     let (tx, rx) = channel();
 
-    let threads: Vec<_> = ns.into_iter().map(|n| {
+    // 並列睡眠
+    let count = ns.into_iter().map(|n| {
         let tx = tx.clone();
 
         thread::spawn(move || {
@@ -18,11 +19,9 @@ pub fn sleep_sort(ns: Vec<u32>) -> Vec<u32> {
 
             tx.send(n).unwrap();
         })
-    }).collect();
+    }).count(); // count で消費
 
-    rx.iter()
-      .take(threads.len())
-      .collect()
+    rx.iter().take(count).collect()
 }
 
 mod tests;
